@@ -16,7 +16,8 @@ const seriesSchema = new Schema({
     min: 0,
   },
   platform: {
-    type: String,
+    type: [Types.ObjectId],
+    ref: "platform",
     required: true,
   },
 });
