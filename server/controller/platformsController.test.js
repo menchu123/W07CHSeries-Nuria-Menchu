@@ -1,7 +1,10 @@
 const Platform = require("../../database/models/platform");
 
-const { getPlatforms, createPlatforms } = require("./platformsController");
-
+const {
+  getPlatforms,
+  createPlatforms,
+  updatePlatforms,
+} = require("./platformsController");
 
 jest.mock("../../database/models/platform");
 
@@ -27,7 +30,6 @@ describe("Given a getPlatforms function", () => {
     });
   });
 });
-
 
 describe("Given a createPlatforms function", () => {
   describe("When it receives an object res, an object req with a body", () => {
@@ -57,3 +59,61 @@ describe("Given a createPlatforms function", () => {
   });
 });
 
+describe("Given a updatePlatforms function", () => {
+  describe("When it receives an object res, an object req with a body", () => {
+    test("Then it should invoke the method json and update a new platform ", async () => {
+      const newPlatform = {
+        name: "Ororo",
+        price: "8",
+        id: 1,
+      };
+
+      const req = {
+        body: newPlatform,
+      };
+
+      Platform.findByIdAndUpdate = jest.fn().mockResolvedValue(newPlatform);
+
+      const res = {
+        json: jest.fn(),
+      };
+
+      const next = () => {};
+
+      await updatePlatforms(req, res, next);
+
+      expect(Platform.findByIdAndUpdate).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(newPlatform);
+    });
+  });
+
+  describe("When it receives a non existent platform", () => {
+    test("Then it should invoke a next function with an error status 404 ", async () => {
+      Platform.findByIdAndUpdate = jest.fn().mockResolvedValue(null);
+
+      const req = {
+        body: {
+          id: "1234",
+        },
+      };
+      const res = {
+        json: jest.fn(),
+      };
+
+      const next = jest.fn();
+
+      const expectedError = {
+        code: 404,
+        message: "Platform not found",
+      };
+
+      await updatePlatforms(req, res, next);
+
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+    });
+  });
+});

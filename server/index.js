@@ -4,7 +4,11 @@ const morgan = require("morgan");
 const debug = require("debug")("series:server");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
+
 const { notFoundErrorHandler, errorHandler } = require("./middlewares/error");
+
+const platformRoutes = require("./routes/platformRoutes");
+
 
 const app = express();
 app.use(cors());
@@ -35,6 +39,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/users", userRoutes);
+app.use("/platforms", platformRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(errorHandler);
