@@ -45,7 +45,7 @@ const userSignUp = async (req, res, next) => {
     error.code = 400;
     next(error);
   } else {
-    newUser.admin = false;
+    newUser.admin ? (newUser.admin = newUser.admin) : (newUser.admin = false);
     newUser.series = [];
     newUser.password = await bcrypt.hash(newUser.password, 10);
     User.create(newUser);
