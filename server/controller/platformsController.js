@@ -16,4 +16,18 @@ const createPlatforms = async (req, res, next) => {
   }
 };
 
-module.exports = { getPlatforms, createPlatforms };
+const updatePlatforms = async (req, res, next) => {
+  try {
+    const { _id } = req.body;
+    const updatedPlatform = await Platform.findById(_id, req.body, {
+      new: true,
+    });
+    res.json(updatedPlatform);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Unauthorized";
+    next(error);
+  }
+};
+
+module.exports = { getPlatforms, createPlatforms, updatePlatforms };

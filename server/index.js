@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const debug = require("debug")("series:server");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
+const platformRoutes = require("./routes/platformRoutes");
 
 const app = express();
 app.use(cors());
@@ -23,7 +24,6 @@ const initializeServer = (port) =>
 
       debug(chalk.red(error.code));
       //reject();
-
     });
 
     server.on("close", () => {
@@ -35,5 +35,6 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/users", userRoutes);
+app.use("/platforms", platformRoutes);
 
 module.exports = { initializeServer };
