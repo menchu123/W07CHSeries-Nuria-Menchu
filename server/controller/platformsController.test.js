@@ -4,6 +4,7 @@ const {
   getPlatforms,
   createPlatforms,
   updatePlatforms,
+  deletePlatforms,
 } = require("./platformsController");
 
 jest.mock("../../database/models/platform");
@@ -69,7 +70,7 @@ describe("Given a updatePlatforms function", () => {
       };
 
       const req = {
-        body: newPlatform,
+        params: newPlatform,
       };
 
       Platform.findByIdAndUpdate = jest.fn().mockResolvedValue(newPlatform);
@@ -92,7 +93,7 @@ describe("Given a updatePlatforms function", () => {
       Platform.findByIdAndUpdate = jest.fn().mockResolvedValue(null);
 
       const req = {
-        body: {
+        params: {
           id: "1234",
         },
       };
@@ -114,6 +115,56 @@ describe("Given a updatePlatforms function", () => {
         expectedError.message
       );
       expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+    });
+  });
+});
+describe("Given a deletePlatforms function", () => {
+  describe("When it receives a request with an id of a platform, an object res with a body", () => {
+    test("Then it should delete the platform with id 1234 ", async () => {
+      const idPlatform = "1234";
+
+      const platform = {
+        name: "Ororo",
+        price: "8",
+        id: idPlatform,
+      };
+
+      const req = {
+        params: { idPlatform },
+      };
+
+      Platform.findByIdAndDelete = jest.fn().mockResolvedValue({});
+
+      const res = {
+        json: jest.fn(),
+      };
+
+      const next = jest.fn();
+
+      await deletePlatforms(req, res, next);
+
+      expect(Platform.findByIdAndDelete).toHaveBeenCalledWith(platform.id);
+    });
+  });
+
+  describe("When it receives a non existent platform and findByIdAndDelete is rejected", () => {
+    test("Then it should invoke a next function with an error status 404 ", async () => {
+      const error = {};
+
+      Platform.findByIdAndDelete = jest.fn().mockRejectedValue(error);
+
+      const req = {
+        params: { idPlatform: 0 },
+      };
+      const res = {
+        json: jest.fn(),
+      };
+
+      const next = jest.fn();
+
+      await deletePlatforms(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -9,7 +9,6 @@ const { notFoundErrorHandler, errorHandler } = require("./middlewares/error");
 
 const platformRoutes = require("./routes/platformRoutes");
 
-
 const app = express();
 app.use(cors());
 

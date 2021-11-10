@@ -18,10 +18,14 @@ const createPlatforms = async (req, res, next) => {
 
 const updatePlatforms = async (req, res, next) => {
   try {
-    const { id } = req.body;
-    const updatedPlatform = await Platform.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const { idPlatform } = req.params;
+    const updatedPlatform = await Platform.findByIdAndUpdate(
+      idPlatform,
+      req.body,
+      {
+        new: true,
+      }
+    );
     if (updatedPlatform) {
       res.json(updatedPlatform);
     } else {
