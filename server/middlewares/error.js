@@ -1,7 +1,6 @@
 const debug = require("debug")("series:errors");
-
+const chalk = require("chalk");
 const { ValidationError } = require("express-validation");
-const debug = require("debug")("series:errors");
 
 const notFoundErrorHandler = (req, res) => {
   res.status(404).json({ error: "Soory, endpoint not found" });

@@ -36,6 +36,23 @@ const userLogin = async (req, res, next) => {
   }
 };
 
+const userSignUp = async (req, res, next) => {
+  const newUser = req.body;
+  const user = await User.findOne({ username: newUser.username });
+  if (user) {
+    debug(chalk.redBright("Username already taken"));
+    const error = new Error("Username already taken");
+    error.code = 400;
+    next(error);
+  } else {
+    newUser.admin = false;
+    newUser.series = [];
+    newUser.password = await bcrypt.hash(newUser.password, 10);
+    User.create(newUser);
+    res.json(newUser);
+  }
+};
+
 // const createUser = async () => {
 //   const user = User.create({
 //     name: "Admin",
@@ -46,4 +63,4 @@ const userLogin = async (req, res, next) => {
 //   });
 // };
 
-module.exports = userLogin;
+module.exports = { userLogin, userSignUp };
