@@ -29,3 +29,5 @@ const initializeDB = (connectionString) => {
     });
   });
 };
+
+module.exports = initializeDB;
