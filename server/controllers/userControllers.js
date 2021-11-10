@@ -41,3 +41,5 @@ const userLogin = async (req, res, next) => {
 //     series: [],
 //   });
 // };
+
+module.exports = userLogin;
