@@ -1,13 +1,13 @@
+const express = require("express");
 const chalk = require("chalk");
 const morgan = require("morgan");
-const express = require("express");
 const debug = require("debug")("series:server");
 const cors = require("cors");
 
 const app = express();
 app.use(cors());
 
-const initializeServer = () => {
+const initializeServer = (port) =>
   new Promise((resolve, reject) => {
     const server = app.listen(port, () => {
       debug(chalk.green(`connecting to ${port}`));
@@ -19,14 +19,13 @@ const initializeServer = () => {
       if (error.code === "EADDRIUNSE") {
         debug(chalk.red(`Port ${port} is already in use.`));
       }
-      reject();
+      //reject();
     });
 
     server.on("close", () => {
       debug(chalk.blue("See you soon"));
     });
   });
-};
 
 app.use(morgan("dev"));
 app.use(express.json());
