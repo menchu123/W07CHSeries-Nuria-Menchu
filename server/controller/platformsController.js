@@ -7,9 +7,8 @@ const getPlatforms = async (req, res) => {
 
 const createPlatforms = async (req, res, next) => {
   try {
-    const platform = req.body;
-    const newPlatform = await Platform.create(platform);
-    res.status(201).json(newPlatform);
+    const newPlatform = await Platform.create(req.body);
+    res.json(newPlatform);
   } catch (error) {
     error.code = 400;
     error.message = "Not permitted";
