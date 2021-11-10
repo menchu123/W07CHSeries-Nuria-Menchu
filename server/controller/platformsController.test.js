@@ -1,5 +1,7 @@
 const Platform = require("../../database/models/platform");
+
 const { getPlatforms, createPlatforms } = require("./platformsController");
+
 
 jest.mock("../../database/models/platform");
 
@@ -25,6 +27,7 @@ describe("Given a getPlatforms function", () => {
     });
   });
 });
+
 
 describe("Given a createPlatforms function", () => {
   describe("When it receives an object res, an object req with a body", () => {
@@ -53,3 +56,4 @@ describe("Given a createPlatforms function", () => {
     });
   });
 });
+
