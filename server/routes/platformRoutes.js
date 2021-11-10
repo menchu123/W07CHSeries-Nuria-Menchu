@@ -5,7 +5,10 @@ const {
   createPlatforms,
   updatePlatforms,
 } = require("../controller/platformsController");
-const { createPlatformSchema } = require("../schemas/platformsSchema");
+const {
+  createPlatformSchema,
+  updatePlatformSchema,
+} = require("../schemas/platformsSchema");
 require("dotenv").config();
 
 const router = express.Router();
