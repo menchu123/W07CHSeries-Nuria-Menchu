@@ -19,7 +19,7 @@ const initializeServer = (port) =>
       if (error.code === "EADDRIUNSE") {
         debug(chalk.red(`Port ${port} is already in use.`));
       }
-      //reject();
+      // reject();
     });
 
     server.on("close", () => {
