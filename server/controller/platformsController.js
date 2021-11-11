@@ -6,14 +6,8 @@ const getPlatforms = async (req, res) => {
 };
 
 const createPlatforms = async (req, res, next) => {
-  try {
-    const newPlatform = await Platform.create(req.body);
-    res.json(newPlatform);
-  } catch (error) {
-    error.code = 400;
-    error.message = "Not permitted";
-    next(error);
-  }
+  const newPlatform = await Platform.create(req.body);
+  res.json(newPlatform);
 };
 
 const updatePlatforms = async (req, res, next) => {
@@ -53,7 +47,7 @@ const deletePlatforms = async (req, res, next) => {
     }
   } catch (error) {
     error.code = 400;
-    error.message = "Cannot delet sorry :(";
+    error.message = "Cannot delete sorry :(";
     next(error);
   }
 };
