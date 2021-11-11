@@ -9,6 +9,8 @@ const User = require("../../database/models/user");
 const { initializeServer } = require("../index");
 const { app } = require("../index");
 
+jest.setTimeout(20000);
+
 const request = supertest(app);
 
 let server;
@@ -50,7 +52,7 @@ describe("Given a /users router,", () => {
     });
   });
   describe("When it gets a POST request for /users/login with a non existent username", () => {
-    test("Then it should send a response with a token and a status code of 200", async () => {
+    test("Then it should send a response with an error and a status code of 200", async () => {
       const { body } = await request
         .post("/users/login")
         .send({ username: "elsithecrocFAKE", password: "imnotelsi" })

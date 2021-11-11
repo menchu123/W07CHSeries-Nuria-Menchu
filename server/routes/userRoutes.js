@@ -1,7 +1,7 @@
 const express = require("express");
 const { validate } = require("express-validation");
 
-const { userLogin, userSignUp } = require("../controllers/userControllers");
+const { userLogin, userSignUp } = require("../controller/userControllers");
 const {
   userLoginRequestSchema,
   userSignUpRequestSchema,
