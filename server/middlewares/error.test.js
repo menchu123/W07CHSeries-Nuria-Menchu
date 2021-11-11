@@ -10,9 +10,9 @@ const mockResponse = () => {
 
 describe("Given an notFoundErrorHandler middleware,", () => {
   describe("When it gets a request", () => {
-    test("Then it should send a response with a 'Soory, endpoint not found' error and a status code of 404", () => {
+    test("Then it should send a response with a 'Sorry, endpoint not found' error and a status code of 404", () => {
       const res = mockResponse();
-      const expectedError = { error: "Soory, endpoint not found" };
+      const expectedError = { error: "Sorry, endpoint not found" };
       const req = {};
 
       notFoundErrorHandler(req, res);

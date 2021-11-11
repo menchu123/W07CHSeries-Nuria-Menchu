@@ -108,7 +108,7 @@ describe("Given a /users router,", () => {
         .expect(404);
 
       const expectedError = {
-        error: "Soory, endpoint not found",
+        error: "Sorry, endpoint not found",
       };
 
       expect(body).toEqual(expectedError);
