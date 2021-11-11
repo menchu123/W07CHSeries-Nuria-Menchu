@@ -91,5 +91,19 @@ describe("Given a /platforms route", () => {
       expect(body).toHaveProperty("name", "Hola");
     });
   });
-  describe();
+  describe("When it receives a POST with an incorrect request", () => {
+    test("Then it should send an error and status code of 400", async () => {
+      const { body } = await request
+        .post("/platforms")
+        .send({
+          name: "Hola",
+          praise: 34,
+        })
+        .expect(400);
+
+      const expectedError = { error: "Bad request sorry" };
+
+      expect(body).toEqual(expectedError);
+    });
+  });
 });
