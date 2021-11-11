@@ -7,6 +7,10 @@ const { app, initializeServer } = require("..");
 const Platform = require("../../database/models/platform");
 const chalk = require("chalk");
 
+
+jest.setTimeout(20000);
+
+
 const request = supertest(app);
 
 const fakePlatforms = [
@@ -91,6 +95,23 @@ describe("Given a /platforms route", () => {
       expect(body).toHaveProperty("name", "Hola");
     });
   });
+});
+describe("Given a /platforms route", () => {
+  describe("When it receives a PUT request with a non existent ID", () => {
+    test("Then it should send a response with an error and a status code of 404", async () => {
+      const { body } = await request
+        .put("/platforms/618c1dc63b972c24c2cfc5d3")
+        .send({ name: "Filmin", price: 12 })
+        .expect(404);
+
+      const expectedError = {
+        error: "Platform not found",
+              };
+
+      expect(body).toEqual(expectedError);
+    });
+  });
+=======
   describe("When it receives a POST with an incorrect request", () => {
     test("Then it should send an error and status code of 400", async () => {
       const { body } = await request
@@ -122,6 +143,19 @@ describe("Given a /platforms/:idPlatform", () => {
       expect(body).toEqual(expectedError);
     });
   });
+
+  describe("When it receives a PUT request with an existent ID and a modified platform", () => {
+    test("Then it should send a response the modified platform", async () => {
+      const { body } = await request
+        .put("/platforms/618cea6689f96dd1ef474c30")
+        .send({ name: "Netflix", price: 12 })
+        .expect(200);
+
+      expect(body).toHaveProperty("price", 12);
+          });
+  });
+});
+
   describe("When it receives a DELETE method with a correct ID", () => {
     test("Then it should respond with a platform deleted and status 200", async () => {
       const { body } = await request
@@ -129,6 +163,7 @@ describe("Given a /platforms/:idPlatform", () => {
         .expect(200);
 
       expect(body).not.toHaveProperty("name", "Filmin");
+
     });
   });
 });

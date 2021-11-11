@@ -11,25 +11,19 @@ const createPlatforms = async (req, res, next) => {
 };
 
 const updatePlatforms = async (req, res, next) => {
-  try {
-    const { idPlatform } = req.params;
-    const updatedPlatform = await Platform.findByIdAndUpdate(
-      idPlatform,
-      req.body,
-      {
-        new: true,
-      }
-    );
-    if (updatedPlatform) {
-      res.json(updatedPlatform);
-    } else {
-      const error = new Error("Platform not found");
-      error.code = 404;
-      next(error);
+  const { idPlatform } = req.params;
+  const updatedPlatform = await Platform.findByIdAndUpdate(
+    idPlatform,
+    req.body,
+    {
+      new: true,
     }
-  } catch (error) {
-    error.code = 400;
-    error.message = "Update failed";
+  );
+  if (updatedPlatform) {
+    res.json(updatedPlatform);
+  } else {
+    const error = new Error("Platform not found");
+    error.code = 404;
     next(error);
   }
 };
