@@ -1,3 +1,4 @@
+const { ValidationError } = require("express-validation");
 const { notFoundErrorHandler, errorHandler } = require("./error");
 
 const mockResponse = () => {
@@ -47,6 +48,25 @@ describe("Given an errorHandler middleware,", () => {
 
       expect(res.status).toHaveBeenCalledWith(401);
       expect(res.json).toHaveBeenCalledWith({ error: error.message });
+    });
+  });
+  describe("When it gets a request and a Validation error", () => {
+    test("Then it should send a response with a 'Bad request sorry' message and a status code of 400", () => {
+      const res = mockResponse();
+
+      const ValidateError = () => {
+        return new Error("Bad request sorry");
+      };
+
+      const error = ValidateError();
+      error.code = 400;
+      const req = {};
+      const next = () => {};
+
+      errorHandler(error, req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: "Bad request sorry" });
     });
   });
 });
