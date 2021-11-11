@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const { validate } = require("express-validation");
 const {
@@ -10,13 +11,18 @@ const {
   createPlatformSchema,
   updatePlatformSchema,
 } = require("../schemas/platformsSchema");
-require("dotenv").config();
+const auth = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.get("/", getPlatforms);
-router.post("/", validate(createPlatformSchema), createPlatforms);
-router.put("/:idPlatform", validate(updatePlatformSchema), updatePlatforms);
-router.delete("/:idPlatform", deletePlatforms);
+router.get("/", auth, getPlatforms);
+router.post("/", validate(createPlatformSchema), auth, createPlatforms);
+router.put(
+  "/:idPlatform",
+  validate(updatePlatformSchema),
+  auth,
+  updatePlatforms
+);
+router.delete("/:idPlatform", auth, deletePlatforms);
 
 module.exports = router;

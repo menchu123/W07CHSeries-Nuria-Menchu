@@ -41,6 +41,11 @@ let token;
 beforeAll(async () => {
   await initializeDB(process.env.MONGO_DBSTRING_TEST);
   server = await initializeServer(process.env.SERVER_PORT_TEST);
+  const loginResponse = await request
+    .post("/users/login")
+    .send({ username: "elsithecroc", password: "damedecome" })
+    .expect(200);
+  token = loginResponse.body.token;
 });
 
 beforeEach(async () => {
@@ -63,7 +68,11 @@ afterAll(async () => {
 describe("Given a /platforms route", () => {
   describe("When it receives a GET request ", () => {
     test("Then it should respond with an array of platforms and status 200", async () => {
-      const { body } = await request.get("/platforms").expect(200);
+      console.log(token);
+      const { body } = await request
+        .get("/platforms")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
 
       const fakePlatformsId = fakePlatformsWithId.map((fakePlatform) => {
         const fakePlatformWithId = {
@@ -82,6 +91,7 @@ describe("Given a /platforms route", () => {
     test("Then it should respond with an array of platforms and status 200", async () => {
       const { body } = await request
         .post("/platforms")
+        .set("Authorization", `Bearer ${token}`)
         .send({
           name: "Hola",
           price: 10,
@@ -96,6 +106,7 @@ describe("Given a /platforms route", () => {
     test("Then it should respond with an array of platforms and status 200", async () => {
       const { body } = await request
         .post("/platforms")
+        .set("Authorization", `Bearer ${token}`)
         .send({
           name: "Hola",
           price: 10,
@@ -110,6 +121,7 @@ describe("Given a /platforms route", () => {
     test("Then it should send an error and status code of 400", async () => {
       const { body } = await request
         .post("/platforms")
+        .set("Authorization", `Bearer ${token}`)
         .send({
           name: "Hola",
           praise: 34,
@@ -128,6 +140,7 @@ describe("Given a /platforms/:idPlatform", () => {
     test("Then it should send a response with an error and a status code of 404", async () => {
       const { body } = await request
         .put("/platforms/618c1dc63b972c24c2cfc5d3")
+        .set("Authorization", `Bearer ${token}`)
         .send({ name: "Filmin", price: 12 })
         .expect(404);
 
@@ -142,6 +155,7 @@ describe("Given a /platforms/:idPlatform", () => {
     test("Then it should send a response the modified platform", async () => {
       const { body } = await request
         .put("/platforms/618cea6689f96dd1ef474c30")
+        .set("Authorization", `Bearer ${token}`)
         .send({ name: "Netflix", price: 12 })
         .expect(200);
 
@@ -152,6 +166,7 @@ describe("Given a /platforms/:idPlatform", () => {
     test("Then it should send an error and status code of 400", async () => {
       const { body } = await await request
         .delete("/platforms/618cea6689f96dd1ef474c39")
+        .set("Authorization", `Bearer ${token}`)
         .expect(404);
 
       const expectedError = {
@@ -166,6 +181,7 @@ describe("Given a /platforms/:idPlatform", () => {
     test("Then it should respond with a platform deleted and status 200", async () => {
       const { body } = await request
         .delete("/platforms/618cea6689f96dd1ef474c32")
+        .set("Authorization", `Bearer ${token}`)
         .expect(200);
 
       expect(body).not.toHaveProperty("name", "Filmin");
