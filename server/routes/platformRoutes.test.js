@@ -107,3 +107,28 @@ describe("Given a /platforms route", () => {
     });
   });
 });
+
+describe("Given a /platforms/:idPlatform", () => {
+  describe("When it receives a DELETE method with an incorrect ID", () => {
+    test("Then it should send an error and status code of 400", async () => {
+      const { body } = await await request
+        .delete("/platforms/618cea6689f96dd1ef474c39")
+        .expect(404);
+
+      const expectedError = {
+        error: "Not found",
+      };
+
+      expect(body).toEqual(expectedError);
+    });
+  });
+  describe("When it receives a DELETE method with a correct ID", () => {
+    test("Then it should respond with a platform deleted and status 200", async () => {
+      const { body } = await request
+        .delete("/platforms/618cea6689f96dd1ef474c32")
+        .expect(200);
+
+      expect(body).not.toHaveProperty("name", "Filmin");
+    });
+  });
+});
