@@ -4,6 +4,7 @@ const {
   getPlatforms,
   createPlatforms,
   updatePlatforms,
+  deletePlatforms,
 } = require("../controller/platformsController");
 const {
   createPlatformSchema,
@@ -16,6 +17,6 @@ const router = express.Router();
 router.get("/", getPlatforms);
 router.post("/", validate(createPlatformSchema), createPlatforms);
 router.put("/:idPlatform", validate(updatePlatformSchema), updatePlatforms);
-router.delete("/:idPlatform");
+router.delete("/:idPlatform", deletePlatforms);
 
 module.exports = router;
