@@ -43,4 +43,4 @@ app.use("/platforms", platformRoutes);
 app.use(notFoundErrorHandler);
 app.use(errorHandler);
 
-module.exports = { app, initializeServer };
+module.exports = { initializeServer, app };
