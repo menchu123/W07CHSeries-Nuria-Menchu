@@ -36,4 +36,17 @@ describe("Given an errorHandler middleware,", () => {
       expect(res.json).toHaveBeenCalledWith(error);
     });
   });
+  describe("When it gets a request and a 'Who are you' error with a 401 error code", () => {
+    test("Then it should send a response with the error's message and a status code of 401", () => {
+      const res = mockResponse();
+      const error = { message: "Who are you", code: 401 };
+      const req = {};
+      const next = () => {};
+
+      errorHandler(error, req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.json).toHaveBeenCalledWith({ error: error.message });
+    });
+  });
 });
