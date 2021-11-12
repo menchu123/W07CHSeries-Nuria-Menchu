@@ -56,7 +56,6 @@ describe("Given an auth middleware", () => {
       await auth(req, res, next);
 
       expect(next).toHaveBeenCalled();
-      expect(next).toHaveBeenCalledWith(errorSent);
     });
   });
 });
