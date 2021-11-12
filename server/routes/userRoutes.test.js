@@ -26,6 +26,7 @@ beforeEach(async () => {
     name: "Elsa",
     password: await bcrypt.hash("damedecome", 10),
     username: "elsithecroc",
+    admin: true,
   });
 });
 
